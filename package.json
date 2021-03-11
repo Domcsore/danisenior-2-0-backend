@@ -1,0 +1,40 @@
+{
+  "name": "danisenior-2-0-backend",
+  "version": "1.0.0",
+  "description": "Dani Senior website backend",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Domcsore/danisenior-2-0-backend.git"
+  },
+  "author": "Dominic Sore",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Domcsore/danisenior-2-0-backend/issues"
+  },
+  "homepage": "https://github.com/Domcsore/danisenior-2-0-backend#readme",
+  "dependencies": {
+    "cookie-parser": "^1.4.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongodb": "^3.6.4"
+  },
+  "devDependencies": {
+    "@types/cookie-parser": "^1.4.2",
+    "@types/dotenv": "^8.2.0",
+    "@types/express": "^4.17.11",
+    "@types/jsonwebtoken": "^8.5.0",
+    "@types/mongodb": "^3.6.9",
+    "@types/node": "^14.14.33",
+    "@typescript-eslint/eslint-plugin": "^4.17.0",
+    "@typescript-eslint/parser": "^4.17.0",
+    "eslint": "^7.21.0",
+    "eslint-config-import": "^0.13.0",
+    "eslint-config-prettier": "^8.1.0",
+    "typescript": "^4.2.3"
+  }
+}
