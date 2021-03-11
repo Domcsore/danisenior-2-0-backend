@@ -34,10 +34,10 @@ app.post("/register", async (req: AppRequest, res: Response) => {
   try {
     const result = await req.db?.collection("users").insertOne({
       email: regBody.email,
+      // TODO HASH PASSWORD
       password: regBody.password,
       roles: [Roles.ADMIN],
     });
-    console.log(result);
   } catch (e) {
     console.log(e);
     res.sendStatus(500);
@@ -66,6 +66,7 @@ app.post("/login", async (req: AppRequest, res: Response) => {
     res.sendStatus(500);
   }
 
+  // TODO USE HASHED PASSWORD
   if (result.password === loginBody.password) {
     setTokenCookie(
       res,
