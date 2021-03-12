@@ -2,6 +2,7 @@ import { AppRequest } from "./request";
 import { RequestHandler, Response, CookieOptions, NextFunction } from "express";
 import jsonwebtoken, { Secret } from "jsonwebtoken";
 import dotenv from "dotenv";
+import bcrypt from "bcrypt";
 
 dotenv.config();
 
@@ -45,6 +46,11 @@ export const jwtMiddleware: RequestHandler = (
 ) => {
   // Get jwt from request cookies
   const jwt: string = getReqToken(req);
+
+  if (!jwt) {
+    next();
+    return;
+  }
 
   try {
     // Try verify jwt

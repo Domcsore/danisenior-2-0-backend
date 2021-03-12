@@ -13,12 +13,15 @@ import {
 } from "./auth";
 import { AppRequest } from "./request";
 import { dbMiddleware } from "./db";
+import bcrypt from "bcrypt";
+import cors from "cors";
 
 dotenv.config();
 
 const app = express();
 const port = 3000;
 
+app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 app.use(jwtMiddleware);
@@ -32,10 +35,10 @@ app.post("/register", async (req: AppRequest, res: Response) => {
   }
 
   try {
-    const result = await req.db?.collection("users").insertOne({
+    const passwordHash = await bcrypt.hash(regBody.password, 10);
+    await req.db?.collection("users").insertOne({
       email: regBody.email,
-      // TODO HASH PASSWORD
-      password: regBody.password,
+      password: passwordHash,
       roles: [Roles.ADMIN],
     });
   } catch (e) {
@@ -54,20 +57,25 @@ app.post("/login", async (req: AppRequest, res: Response) => {
     return;
   }
 
-  let result;
+  let authenticated: Boolean = false;
 
   try {
-    result = await req.db
+    const result = await req.db
       ?.collection("users")
       .findOne({ email: { $eq: loginBody.email } });
-    console.log(result);
-  } catch (e) {
-    console.log(e);
-    res.sendStatus(500);
-  }
 
-  // TODO USE HASHED PASSWORD
-  if (result.password === loginBody.password) {
+    if (!result) {
+      res.sendStatus(401);
+      return;
+    }
+
+    authenticated = await bcrypt.compare(loginBody.password, result.password);
+
+    if (!authenticated) {
+      res.sendStatus(401);
+      return;
+    }
+
     setTokenCookie(
       res,
       createToken({
@@ -75,15 +83,21 @@ app.post("/login", async (req: AppRequest, res: Response) => {
         roles: result.roles,
       })
     );
+
+    res.sendStatus(200);
+    return;
+  } catch (e) {
+    console.log(e);
+    res.sendStatus(500);
+    return;
   }
-  res.sendStatus(200);
 });
 
-app.use("/", roleMiddleware([Roles.EDITOR]));
+app.use("/", roleMiddleware([Roles.ADMIN]));
 app.get("/", (req: AppRequest, res) => {
   res.json({ valid: req.validToken });
 });
 
-app.listen(port, () => {
-  console.log("Starting server...");
+app.listen(process.env.PORT, () => {
+  console.log(`Starting server on port ${process.env.PORT}`);
 });
