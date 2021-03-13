@@ -1,29 +1,22 @@
 import cookieParser from "cookie-parser";
-import express, { Response } from "express";
+import express from "express";
 import dotenv from "dotenv";
+import { AppRequest } from "./request";
+import { dbMiddleware } from "./db";
+import cors from "cors";
 import {
   jwtMiddleware,
-  LoginBody,
-  RegisterBody,
   roleMiddleware,
   Roles,
-  setTokenCookie,
-  createToken,
-  getReqToken,
   registerHandler,
   loginHandler,
   authHandler,
 } from "./auth";
-import { AppRequest } from "./request";
-import { dbMiddleware } from "./db";
-import bcrypt from "bcrypt";
-import cors from "cors";
-import { ApiErrorCodes, ApiError } from "./errors";
+import { getBiographyHandler, postBiographyHandler } from './me';
 
 dotenv.config();
 
 const app = express();
-const port = 3000;
 
 app.use(
   cors({
@@ -39,6 +32,8 @@ app.use(dbMiddleware);
 app.post("/register", registerHandler);
 app.post("/login", loginHandler);
 app.get("/auth", authHandler);
+app.get("/me/bio", roleMiddleware([Roles.ADMIN]), getBiographyHandler);
+app.post("/me/bio", postBiographyHandler)
 
 app.get("/", roleMiddleware([Roles.ADMIN]), (req: AppRequest, res) => {
   res.json({ valid: req.validToken });
