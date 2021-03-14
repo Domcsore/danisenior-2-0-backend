@@ -2,25 +2,25 @@ import { json, Response } from "express";
 import { AppRequest } from "./request";
 import { ApiErrorCodes, sendError } from "./errors";
 
-interface BiographyRequest {
-  biography: string;
+interface EditorRequest {
+  html: string;
 }
 
-export const getBiographyHandler = async (req: AppRequest, res: Response) => {
+export const getEditorHtmlHandler = async (req: AppRequest, res: Response) => {
   try {
     const result = await req.db
-      ?.collection("htmlData")
-      .findOne({ title: { $eq: "biography" } });
+      ?.collection("editorHtml")
+      .findOne({ title: { $eq: req.params.editorName } });
 
     if (!result) {
       res.json({
-        biography: "",
+        html: "",
       });
       return;
     }
 
     res.json({
-      biography: result.html,
+      html: result.html,
     });
   } catch (e) {
     console.log(e);
@@ -32,14 +32,14 @@ export const getBiographyHandler = async (req: AppRequest, res: Response) => {
   }
 };
 
-export const postBiographyHandler = async (req: AppRequest, res: Response) => {
-  const biographyReq: BiographyRequest = req.body as BiographyRequest;
+export const postEditorHtmlHandler = async (req: AppRequest, res: Response) => {
+  const editorReq: EditorRequest = req.body as EditorRequest;
   try {
     const result = await req.db
-      ?.collection("htmlData")
+      ?.collection("editorHtml")
       .updateOne(
-        { title: { $eq: "biography" } },
-        { $set: { html: biographyReq.biography }},
+        { title: { $eq: req.params.editorName } },
+        { $set: { html: editorReq.html } },
         { upsert: true }
       );
   } catch (e) {
@@ -53,6 +53,6 @@ export const postBiographyHandler = async (req: AppRequest, res: Response) => {
   }
 
   res.json({
-    massage: "OK",
+    message: "OK",
   });
 };

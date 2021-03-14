@@ -12,7 +12,8 @@ import {
   loginHandler,
   authHandler,
 } from "./auth";
-import { getBiographyHandler, postBiographyHandler } from './me';
+import { getBiographyHandler, postBiographyHandler } from "./me";
+import { getEditorHtmlHandler, postEditorHtmlHandler } from "./editor";
 
 dotenv.config();
 
@@ -32,8 +33,16 @@ app.use(dbMiddleware);
 app.post("/register", registerHandler);
 app.post("/login", loginHandler);
 app.get("/auth", authHandler);
-app.get("/me/bio", roleMiddleware([Roles.ADMIN]), getBiographyHandler);
-app.post("/me/bio", postBiographyHandler)
+app.get(
+  "/editor/:editorName",
+  roleMiddleware([Roles.ADMIN]),
+  getEditorHtmlHandler
+);
+app.post(
+  "/editor/:editorName",
+  roleMiddleware([Roles.ADMIN]),
+  postEditorHtmlHandler
+);
 
 app.get("/", roleMiddleware([Roles.ADMIN]), (req: AppRequest, res) => {
   res.json({ valid: req.validToken });
