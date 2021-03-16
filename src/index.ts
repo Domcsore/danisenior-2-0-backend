@@ -12,7 +12,6 @@ import {
   loginHandler,
   authHandler,
 } from "./auth";
-import { getBiographyHandler, postBiographyHandler } from "./me";
 import { getEditorHtmlHandler, postEditorHtmlHandler } from "./editor";
 
 dotenv.config();
