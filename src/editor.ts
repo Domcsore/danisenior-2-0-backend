@@ -34,6 +34,7 @@ export const getEditorHtmlHandler = async (req: AppRequest, res: Response) => {
 
 export const postEditorHtmlHandler = async (req: AppRequest, res: Response) => {
   const editorReq: EditorRequest = req.body as EditorRequest;
+  console.log(editorReq);
   try {
     const result = await req.db
       ?.collection("editorHtml")
