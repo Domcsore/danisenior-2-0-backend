@@ -29,6 +29,8 @@ app.use(cookieParser());
 app.use(jwtMiddleware);
 app.use(dbMiddleware);
 
+app.use("/data", express.static(process.env.DATAPATH as string));
+
 app.post("/register", registerHandler);
 app.post("/login", loginHandler);
 app.get("/auth", authHandler);

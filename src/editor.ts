@@ -10,7 +10,7 @@ export const getEditorHtmlHandler = async (req: AppRequest, res: Response) => {
   try {
     const result = await req.db
       ?.collection("editorHtml")
-      .findOne({ title: { $eq: req.params.editorName } });
+      .findOne({ name: { $eq: req.params.editorName } });
 
     if (!result) {
       res.json({
@@ -38,7 +38,7 @@ export const postEditorHtmlHandler = async (req: AppRequest, res: Response) => {
     const result = await req.db
       ?.collection("editorHtml")
       .updateOne(
-        { title: { $eq: req.params.editorName } },
+        { name: { $eq: req.params.editorName } },
         { $set: { html: editorReq.html } },
         { upsert: true }
       );
