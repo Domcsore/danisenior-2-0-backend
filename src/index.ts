@@ -23,7 +23,7 @@ const app = express();
 // ALL ROUTE MIDDLEWARE
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: ["http://localhost:3000", "http://localhost:3002"],
     credentials: true,
   })
 );
@@ -40,11 +40,7 @@ app.post("/register", registerHandler);
 app.post("/login", loginHandler);
 app.get("/auth", authHandler);
 
-app.get(
-  "/editor/:editorName",
-  roleMiddleware([Roles.ADMIN]),
-  getEditorHtmlHandler
-);
+app.get("/editor/:editorName", getEditorHtmlHandler);
 app.post(
   "/editor/:editorName",
   roleMiddleware([Roles.ADMIN]),
