@@ -7,6 +7,7 @@ export enum ApiErrorCodes {
   PASSWORDHASH,
   INSERTINGUSER,
   UNAUTHORIZED,
+  NOTFOUND,
 }
 
 export interface ApiError {

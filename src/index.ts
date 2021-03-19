@@ -15,6 +15,7 @@ import {
 } from "./auth";
 import { getEditorHtmlHandler, postEditorHtmlHandler } from "./editor";
 import { getImageHandler, postImageHandler } from "./image";
+import { deleteSongHanlder, getSongsHandler, postSongHandler } from "./songs";
 
 // INIT
 dotenv.config();
@@ -54,6 +55,15 @@ app.post(
   postImageHandler
 );
 app.get("/image/:name", getImageHandler);
+
+app.post(
+  "/song/:id",
+  roleMiddleware([Roles.ADMIN]),
+  fileUpload(),
+  postSongHandler
+);
+app.get("/songs", getSongsHandler);
+app.delete("/song/:id", roleMiddleware([Roles.ADMIN]), deleteSongHanlder);
 
 app.get("/", roleMiddleware([Roles.ADMIN]), (req: AppRequest, res) => {
   res.json({ valid: req.validToken });
