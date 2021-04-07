@@ -2,8 +2,8 @@ import syncFs, { promises as fs } from "fs";
 import { UploadedFile } from "express-fileupload";
 import sharp from "sharp";
 import { Response } from "express";
-import { AppRequest } from "./request";
-import { ApiErrorCodes, sendError } from "./errors";
+import { AppRequest } from "../request";
+import { ApiErrorCodes, sendError } from "../errors";
 
 export const postImageHandler = async (req: AppRequest, res: Response) => {
   const name = req.params["name"];

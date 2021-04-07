@@ -12,10 +12,15 @@ import {
   registerHandler,
   loginHandler,
   authHandler,
-} from "./auth";
-import { getEditorHtmlHandler, postEditorHtmlHandler } from "./editor";
-import { getImageHandler, postImageHandler } from "./image";
-import { deleteSongHanlder, getSongsHandler, postSongHandler } from "./songs";
+} from "./routes/auth";
+import { getEditorHtmlHandler, postEditorHtmlHandler } from "./routes/editor";
+import { getImageHandler, postImageHandler } from "./routes/image";
+import {
+  deleteSongHanlder,
+  getSongsHandler,
+  postSongHandler,
+} from "./routes/songs";
+import { getMediaHandler, postMediaHandler } from "./routes/media";
 
 // INIT
 dotenv.config();
@@ -64,6 +69,14 @@ app.post(
 );
 app.get("/songs", getSongsHandler);
 app.delete("/song/:id", roleMiddleware([Roles.ADMIN]), deleteSongHanlder);
+
+app.post(
+  "/media/:id",
+  roleMiddleware([Roles.ADMIN]),
+  fileUpload(),
+  postMediaHandler
+);
+app.get("/media", getMediaHandler);
 
 app.get("/", roleMiddleware([Roles.ADMIN]), (req: AppRequest, res) => {
   res.json({ valid: req.validToken });

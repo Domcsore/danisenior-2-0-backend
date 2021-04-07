@@ -1,4 +1,4 @@
-import { User } from "./auth";
+import { User } from "./routes/auth";
 import { Request } from "express";
 import { Db } from "mongodb";
 

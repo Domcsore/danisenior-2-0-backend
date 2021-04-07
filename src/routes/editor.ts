@@ -1,6 +1,6 @@
 import { json, Response } from "express";
-import { AppRequest } from "./request";
-import { ApiErrorCodes, sendError } from "./errors";
+import { AppRequest } from "../request";
+import { ApiErrorCodes, sendError } from "../errors";
 
 interface EditorRequest {
   html: string;
@@ -34,7 +34,6 @@ export const getEditorHtmlHandler = async (req: AppRequest, res: Response) => {
 
 export const postEditorHtmlHandler = async (req: AppRequest, res: Response) => {
   const editorReq: EditorRequest = req.body as EditorRequest;
-  console.log(editorReq);
   try {
     const result = await req.db
       ?.collection("editorHtml")

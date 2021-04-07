@@ -1,8 +1,8 @@
-import { AppRequest } from "./request";
+import { AppRequest } from "../request";
 import { RequestHandler, Response, NextFunction } from "express";
 import jsonwebtoken from "jsonwebtoken";
 import dotenv from "dotenv";
-import { ApiErrorCodes, ApiError, sendError } from "./errors";
+import { ApiErrorCodes, ApiError, sendError } from "../errors";
 import bcrypt from "bcrypt";
 import { Db } from "mongodb";
 

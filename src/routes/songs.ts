@@ -3,9 +3,8 @@ import { Response } from "express";
 import sharp from "sharp";
 import syncFs, { promises as fs } from "fs";
 import { ObjectID } from "mongodb";
-import { AppRequest } from "./request";
-import { ApiErrorCodes, sendError } from "./errors";
-import { existsSync } from "node:fs";
+import { AppRequest } from "../request";
+import { ApiErrorCodes, sendError } from "../errors";
 
 export const postSongHandler = async (req: AppRequest, res: Response) => {
   const id =
@@ -113,9 +112,8 @@ export const getSongsHandler = async (req: AppRequest, res: Response) => {
 export const deleteSongHanlder = async (req: AppRequest, res: Response) => {
   const id = req.params["id"];
 
-  // TODO delete image file
-
   try {
+    await fs.rm(`${process.env.DATAPATH}/images/songs/${id}.jpg`);
     const result = await req.db
       ?.collection("songs")
       .deleteOne({ _id: { $eq: id } });
